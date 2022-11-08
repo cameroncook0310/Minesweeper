@@ -1,4 +1,6 @@
 import random
+import time
+
 # Helper function to help create the game board
 def update_board(tiles):
     board = '  '
@@ -30,8 +32,8 @@ class Minesweeper:
             self.ROWS, self.COLS, self.mines = 16, 30, 99
         self.tile_matrix = [[' ' for i in range(self.COLS)] for j in range(self.ROWS)]    # Creates empty matrix that will contain tile placement
         self.guess_matrix = [[' ' for i in range(self.COLS)] for j in range(self.ROWS)]    # Creates empty matrix that will fill in as player makes guesses
-        self.board = update_board(self.guess_matrix)    # creates board that will show to players 
-        self.flags = self.mines
+        self.board = update_board(self.guess_matrix)    # Creates board that will show to players 
+        self.flags = self.mines 
         self.first_guess = True
 
     def __str__(self):
@@ -44,7 +46,7 @@ class Minesweeper:
         while len(placement_set) < self.mines:
             randRow = random.randint(0, self.ROWS - 1)
             randCol =  random.randint(0, self.COLS - 1)
-            if (randRow, randCol) != first_guess:
+            if (randRow, randCol) != first_guess:    # Insures that the player doesn't get a mine on their first guess
                 placement_set.add((randRow, randCol))
         #Places the mines into the tile matrix at the randomly generated indexes
         for i in range(len(self.tile_matrix)):
@@ -101,8 +103,7 @@ class Minesweeper:
 
                     self.tile_matrix[i][j] = str(tile_num)
 
-            
-        
+    # Reveals all the surrounding neighbor tiles with no adjacent mines             
     def reveal_zero_neighbors(self, row, col, checked_set = set()):
         if row < 0 or col < 0:
             return
@@ -131,6 +132,7 @@ class Minesweeper:
                     return
 
 
+    # Allows the user to select a tile to reveal or place a flag on and validates their responses to insure they made a legal input
     def select_tile(self):
         while True:
             guess = input('Specify a guess r, c or input F/f to place or unplace a flag: ')
@@ -148,7 +150,7 @@ class Minesweeper:
                         print('R and c should be whole numbers. Try again!\n')
                     else:
                         if r in range(len(self.guess_matrix)) and c in range(len(self.guess_matrix[1])) and self.guess_matrix[r][c] == ' ':
-                            if self.flags > 0:
+                            if self.flags > 0:    # Makes sure the user has not run out of flags
                                 self.guess_matrix[r][c] = 'F'
                                 self.board = update_board(self.guess_matrix)
                                 self.flags -= 1
@@ -197,6 +199,7 @@ class Minesweeper:
                         else:
                             print('Illegal move specified. Try again!\n')
 
+    # Checks to see if the conditions for losing the game have been met 
     def lose(self):
         for i in range(len(self.tile_matrix)):
             for j in range(len(self.tile_matrix[i])):
@@ -207,7 +210,7 @@ class Minesweeper:
         print('\n')
         print('Sorry! You lost.')
 
-
+    # Checks to see if the conditions for winning the game have been met 
     def win(self):
         for i in range(len(self.guess_matrix)):
             for j in range(len(self.guess_matrix[i])):
@@ -222,3 +225,40 @@ class Minesweeper:
         print('\n')
         print('Congrats! You won!')
         return True
+
+
+# Function that runs the game 
+def main():
+    while True:
+        while True:
+            start_time = int(round(time.time(), 0))
+            difficulty = input('What difficulty would you like to play (easy, medium, hard)?: ')    # Gets user input for what difficulty they want to play
+            if difficulty in('Easy', 'easy', 'Medium', 'medium', 'Hard', 'hard'):
+                game = Minesweeper(difficulty)
+                print(game)
+                print('\n')
+                break
+            else:
+                print('Please enter a valid difficulty.\n')
+            
+        while True:
+            lose = game.select_tile()
+            win = game.win()
+            if win or lose:    # Breaks game loop if user meets the conditions for winning or losing 
+                break
+            else:
+                print(game)
+                print('\n')
+        end_time = int(round(time.time(), 0))
+        elapsed_time = end_time - start_time   # Tracks the time time it took to finish the game 
+        if elapsed_time <= 999:
+            print('Your game took', elapsed_time, 'seconds.\n')
+        else:
+            print('Your game took over 999 seconds.\n')
+        new_game = input('If you would like to play another game input Y/y, or input any other key to stop playing: ')    # Asks user if they want to play another game
+        print('\n')
+        if new_game not in ('Y', 'y'):
+            break
+
+main()
+
