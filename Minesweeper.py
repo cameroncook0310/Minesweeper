@@ -23,7 +23,7 @@ class Minesweeper:
     def __init__(self, difficulty = 'Easy'):
         self.difficulty = difficulty
         if self.difficulty in ('Easy', 'easy'):
-            self.ROWS, self.COLS, self.mines = 9, 9, 10
+            self.ROWS, self.COLS, self.mines = 9, 9, 80
             
         elif self.difficulty in ('Medium', 'medium'):
             self.ROWS, self.COLS, self.mines = 16, 16, 40
@@ -261,4 +261,3 @@ def main():
             break
 
 main()
-
