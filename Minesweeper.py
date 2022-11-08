@@ -205,7 +205,7 @@ class Minesweeper:
         self.board = update_board(self.guess_matrix)
         print(self.board)
         print('\n')
-        print('Sorry! You lost.\n')
+        print('Sorry! You lost.')
 
 
     def win(self):
@@ -220,5 +220,5 @@ class Minesweeper:
         self.board = update_board(self.guess_matrix)
         print(self.board)
         print('\n')
-        print('Congrats! You won!\n')
+        print('Congrats! You won!')
         return True
