@@ -23,7 +23,7 @@ class Minesweeper:
     def __init__(self, difficulty = 'Easy'):
         self.difficulty = difficulty
         if self.difficulty in ('Easy', 'easy'):
-            self.ROWS, self.COLS, self.mines = 9, 9, 80
+            self.ROWS, self.COLS, self.mines = 9, 9, 10
             
         elif self.difficulty in ('Medium', 'medium'):
             self.ROWS, self.COLS, self.mines = 16, 16, 40
@@ -178,11 +178,12 @@ class Minesweeper:
                     except ValueError:
                         print('R and c should be whole numbers. Try again!\n')
                     else:
-                        if self.first_guess:
-                            self.place_mines((r, c))
-                            self.generate_tiles()
-                            self.first_guess = False
                         if r in range(len(self.guess_matrix)) and c in range(len(self.guess_matrix[1])) and self.guess_matrix[r][c] == ' ':
+                            if self.first_guess:
+                                self.place_mines((r, c))
+                                self.generate_tiles()
+                                self.first_guess = False
+                            
                             if self.tile_matrix[r][c] == '*':
                                 self.lose()
                                 return True
