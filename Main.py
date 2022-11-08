@@ -6,8 +6,6 @@ def main():
             difficulty = input('What difficulty would you like to play (easy, medium, hard)?: ')
             if difficulty in('Easy', 'easy', 'Medium', 'medium', 'Hard', 'hard'):
                 game = Minesweeper.Minesweeper(difficulty)
-                game.place_mines()
-                game.generate_tiles()
                 print(game)
                 print('\n')
                 break
@@ -22,7 +20,8 @@ def main():
             else:
                 print(game)
                 print('\n')
-        new_game = input('If you would like to play another game input Y/y, or input any other key to stop playing.')
+        new_game = input('If you would like to play another game input Y/y, or input any other key to stop playing: ')
+        print('\n')
         if new_game not in ('Y', 'y'):
             break
 
